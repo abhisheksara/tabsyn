@@ -13,12 +13,14 @@ def main(args):
     config_path = f'{curr_dir}/configs/{dataname}.toml'
     model_save_path = f'{curr_dir}/ckpt/{dataname}'
     real_data_path = f'data/{dataname}'
-    sample_save_path = f'synthetic/{dataname}'
+    # sample_save_path = f'synthetic/{dataname}'
+    sample_save_path = args.save_path
+    save_dir = os.path.dirname(sample_save_path)
 
     print(sample_save_path)
 
-    if not os.path.exists(sample_save_path):
-        os.makedirs(sample_save_path)
+    if not os.path.exists(save_dir):
+        os.makedirs(save_dir)
     
     args.train = True
     
