@@ -63,6 +63,7 @@ def main(args):
     dataname = args.dataname
     device = args.device
     save_path = args.save_path
+    save_dir = os.path.dirname(save_path)
 
     curr_dir = os.path.dirname(os.path.abspath(__file__))
     dataset_dir = f'data/{dataname}'
@@ -98,9 +99,9 @@ def main(args):
         device=device,
         beta=1,
         learning_rate=0.01,
-        seed=42,
+        seed=42
     )
-
+    
     gen.model.load_state_dict(torch.load(f'{ckpt_dir}/model.pt'))
 
     start_time = time.time()
@@ -132,6 +133,7 @@ def main(args):
     idx_name_mapping = {int(key): value for key, value in idx_name_mapping.items()}
 
     syn_df.rename(columns = idx_name_mapping, inplace=True)
+    os.makedirs(save_dir, exist_ok=True)
     syn_df.to_csv(save_path, index = False)
 
     end_time = time.time()  

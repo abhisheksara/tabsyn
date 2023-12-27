@@ -210,37 +210,45 @@ class GoggleModel:
 
     def sample(self, X_test):
         count = X_test.shape[0]
-        X_synth = self.model.sample(count)
-        X_synth = X_synth.cpu().detach().numpy()
+        if count>1000:
+            for i in range(count//1000):
+                if i==0:
+                    X_synth = self.model.sample(1000)
+                    X_synth = X_synth.cpu().detach().numpy()
+                else:
+                    X_synth = np.concatenate((X_synth, self.model.sample(1000).cpu().detach().numpy()), axis=0)
+        else:
+            X_synth = self.model.sample(count)
+            X_synth = X_synth.cpu().detach().numpy()
 
         # X_synth = self.enforce_constraints(X_synth, X_test)
         # X_synth = pd.DataFrame(X_synth, columns=X_test.columns)
         return X_synth
 
-        quality_evaluator = eval_statistical.AlphaPrecision()
-        qual_res = quality_evaluator.evaluate(X_test, X_synth)
-        qual_res = {
-            k: v for (k, v) in qual_res.items() if "naive" in k
-        }  # use the naive implementation of AlphaPrecision
-        qual_score = np.mean(list(qual_res.values()))
+        # quality_evaluator = eval_statistical.AlphaPrecision()
+        # qual_res = quality_evaluator.evaluate(X_test, X_synth)
+        # qual_res = {
+        #     k: v for (k, v) in qual_res.items() if "naive" in k
+        # }  # use the naive implementation of AlphaPrecision
+        # qual_score = np.mean(list(qual_res.values()))
 
-        xgb_evaluator = eval_performance.PerformanceEvaluatorXGB()
-        linear_evaluator = eval_performance.PerformanceEvaluatorLinear()
-        mlp_evaluator = eval_performance.PerformanceEvaluatorMLP()
-        xgb_score = xgb_evaluator.evaluate(X_test, X_synth)
-        linear_score = linear_evaluator.evaluate(X_test, X_synth)
-        mlp_score = mlp_evaluator.evaluate(X_test, X_synth)
-        gt_perf = (xgb_score["gt"] + linear_score["gt"] + mlp_score["gt"]) / 3
-        synth_perf = (
-            xgb_score["syn_ood"] + linear_score["syn_ood"] + mlp_score["syn_ood"]
-        ) / 3
+        # xgb_evaluator = eval_performance.PerformanceEvaluatorXGB()
+        # linear_evaluator = eval_performance.PerformanceEvaluatorLinear()
+        # mlp_evaluator = eval_performance.PerformanceEvaluatorMLP()
+        # xgb_score = xgb_evaluator.evaluate(X_test, X_synth)
+        # linear_score = linear_evaluator.evaluate(X_test, X_synth)
+        # mlp_score = mlp_evaluator.evaluate(X_test, X_synth)
+        # gt_perf = (xgb_score["gt"] + linear_score["gt"] + mlp_score["gt"]) / 3
+        # synth_perf = (
+        #     xgb_score["syn_ood"] + linear_score["syn_ood"] + mlp_score["syn_ood"]
+        # ) / 3
 
-        xgb_detector = eval_detection.SyntheticDetectionXGB()
-        mlp_detector = eval_detection.SyntheticDetectionMLP()
-        gmm_detector = eval_detection.SyntheticDetectionGMM()
-        xgb_det = xgb_detector.evaluate(X_test, X_synth)
-        mlp_det = mlp_detector.evaluate(X_test, X_synth)
-        gmm_det = gmm_detector.evaluate(X_test, X_synth)
-        det_score = (xgb_det["mean"] + mlp_det["mean"] + gmm_det["mean"]) / 3
+        # xgb_detector = eval_detection.SyntheticDetectionXGB()
+        # mlp_detector = eval_detection.SyntheticDetectionMLP()
+        # gmm_detector = eval_detection.SyntheticDetectionGMM()
+        # xgb_det = xgb_detector.evaluate(X_test, X_synth)
+        # mlp_det = mlp_detector.evaluate(X_test, X_synth)
+        # gmm_det = gmm_detector.evaluate(X_test, X_synth)
+        # det_score = (xgb_det["mean"] + mlp_det["mean"] + gmm_det["mean"]) / 3
 
-        return qual_score, (gt_perf, synth_perf), det_score
+        # return qual_score, (gt_perf, synth_perf), det_score

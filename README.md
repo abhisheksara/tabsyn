@@ -15,7 +15,7 @@ conda activate tabsyn
 Install pytorch
 
 ```
-pip install torch torchvision torchaudio
+pip install torch torchvision torchaudio --index-url https://download.pytorch.org/whl/cu117
 ```
 
 Install other dependencies

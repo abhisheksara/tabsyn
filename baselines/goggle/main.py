@@ -50,6 +50,7 @@ def main(args):
         beta=1,
         learning_rate=0.01,
         seed=42,
+        batch_size=512,
     )
     print(gen.model)
     print(gen.model.learned_graph.graph.shape)
