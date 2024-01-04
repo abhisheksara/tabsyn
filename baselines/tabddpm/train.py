@@ -45,8 +45,8 @@ class Trainer:
         columns = ['step'] + columns
  
 
-        self.log_every = 50
-        self.print_every = 1
+        self.log_every = 1000
+        self.print_every = 500
         self.ema_every = 1000
 
     def _anneal_lr(self, step):
@@ -74,8 +74,8 @@ class Trainer:
         curr_loss_gauss = 0.0
 
         curr_count = 0
-        self.print_every = 1
-        self.log_every = 1
+        # self.print_every = 1
+        # self.log_every = 1
 
         best_loss = np.inf
         print('Steps: ', self.steps)
@@ -102,7 +102,7 @@ class Trainer:
                 if (step + 1) % self.print_every == 0:
                     print(f'Step {(step + 1)}/{self.steps} MLoss: {mloss} GLoss: {gloss} Sum: {mloss + gloss}')
                 self.loss_history.loc[len(self.loss_history)] =[step + 1, mloss, gloss, mloss + gloss]
-
+                self.loss_history.to_csv(os.path.join(self.model_save_path, 'loss.csv'), index=False)
                 np.set_printoptions(suppress=True)
           
                 curr_count = 0
