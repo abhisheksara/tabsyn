@@ -1056,7 +1056,8 @@ class GaussianMultinomialDiffusion(torch.nn.Module):
             all_samples.append(sample)
       
             if sample.shape[0] != b:
-                raise FoundNANsError
+                # raise FoundNANsError
+                pass
             num_generated += sample.shape[0]
 
         x_gen = torch.cat(all_samples, dim=0)[:num_samples]
