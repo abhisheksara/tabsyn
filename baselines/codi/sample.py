@@ -175,6 +175,9 @@ def main(args):
     syn_df.rename(columns = idx_name_mapping, inplace=True)
 
     save_path = args.save_path
+    save_dir = os.path.dirname(save_path)
+    if not os.path.exists(save_dir):
+        os.makedirs(save_dir)
     syn_df.to_csv(save_path, index = False)
 
     end_time = time.time()
