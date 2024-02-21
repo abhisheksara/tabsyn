@@ -1,0 +1,14 @@
+{
+    "adult": {
+        "goggle": {
+            "roc_auc_real": 0.9243359698199749,
+            "roc_auc_synthetic": 0.6228046789744529,
+            "difference": 0.301531290845522
+        },
+        "codi": {
+            "roc_auc_real": 0.9243359698199749,
+            "roc_auc_synthetic": 0.7959585058110809,
+            "difference": 0.12837746400889405
+        }
+    }
+}
