@@ -74,7 +74,7 @@ class Trainer:
         curr_loss_gauss = 0.0
 
         curr_count = 0
-        self.print_every = 1
+        self.print_every = 100
         self.log_every = 1
 
         best_loss = np.inf
